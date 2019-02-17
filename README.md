@@ -37,7 +37,7 @@ added to the `<head>` section of your pages.
 ## Configuration options
 
 | Option | type |  description
-| -------- | ---- | -----------
+| ------ | ---- | -----------
 | `id` | String | Your Google Adsense Publihser client ID (i.e. `ca-pub-#########`). **Required** when not in test mode.
 | `pageLevelAds` | Boolean | Enable Adsense Page Level Ads. Default is `false`. Refer to the AdSense docs for details.
 | `tag` | String | AdSense component tag name. Defaults to `adsbygoogle`.
@@ -45,6 +45,9 @@ added to the `<head>` section of your pages.
 | `analyticsUacct` | String | Google Analytics Account ID (if linking analytics with AdSense, i.e. `UA-#######-#`).
 | `analyticsDomainName` | String | Google Analytics Account Domain (if linking analytics with AdSense, i.e. `example.com`).
 | `test` | Boolean | Force AdSense into _test_ mode (see below).
+| `pauseAdRequests` | Boolean | Pause ad requests until user consent is received.  The default is `false`.
+| `requestNonPersonalizedAds` | Boolean | Show only non-personalized ads.  The default is `false`.
+| `showAdRegion` | Boolean | Generate a unique `data-ad-region` every time the component is updated.  This is required for SPAs but if generating a universal app may cause changes to generated output every time.  This will cause tools like `gulp-awspublish` to upload the page every time.  The default is `true`.
 
 ### Test mode
 
@@ -82,19 +85,26 @@ Use the `ad-slot` property to specify your google adsense ad slot value (specifi
 | `include-query` | Boolean | Override global option `includeQuery` on a per ad basis. Ensure all ads on a page have the same setting.
 | `analytics-uacct` | String | Google Analytics Account ID (if linking analytics with AdSense, i.e. `UA-#######-#`). Defaults to the value specified in the plugin option `analyticsUacct`.
 | `analytics-domain-name` | String | Google Analytics Account domain (if linking analytics with AdSense, i.e. `example.com`). Defaults to the value specified in the plugin option `analyticsDomainName`.
-
+| `pause-ad-requests` | Boolean | Overrides global `pauseAdRequests`.  Defer ad requests until user consent has been obtained.
+| `request-non-personalized-ads` | Boolean | Overrides global `requestNonPersonalizedAds`.  Show only non-personalized ads.
+| `ad-region` | Boolean | Overrides global option `adRegion`.  If true `data-ad-region` will be set to a random value.  This is required for SPAs but if generating a universal app may cause changes to generated output every time.  This will cause tools like `gulp-awspublish` to reupload the page every time.
 
 ## Automatic updating of Ads
 Whenever your route changes, any disaplayed ads will update, just as they would on normal
 page loads.
 
+## Pausing ad requests and non-personalzed ads
+
+Adsense allows ad requests to be paused until user consent is given: https://support.google.com/adsense/answer/9042142.  To use this functionality either set `pauseAdRequests` to `true` globally or `pause-ad-requests` on the component.  If `pause-ad-requests` is used on the component it can be updated to unpause ad requests.  If `pauseAdRequests` is set globally it can be cleared using `$adsbygoogle.unpauseAdRequests()`.  This approach should be used for auto ads.
+
+To comply with the EU consent policy (https://support.google.com/adsense/answer/7670013) adsense allows publishers to request non-personalized ads.  This can either be configured at an account level or by setting `(adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1` before requesting ads.  This module will add the code if `requestNonPersonalizedAds` is set globally or `request-non-personalized-ads` is set on the component.  The value can be updated using `$adsbygoogle.requestNonPersonalizedAds(bool)`.  This method needs to be called before requesting ads.
 
 ## Caveats:
 - **Note:** AdSense limits you to a maximum of three (3) ads per page.
 - **Caution:** Reloading of ads arbitrarily (with minimal page content changes) may result in
 the suspension of your AdSense account. _Refer to AdSense for full terms of use._
 - Google needs to crawl each page where ads appear. Ensure your site SSR renders any page where
-ads apepar. Ads on un-crawlable pages will not be shown.
+ads appear. Ads on un-crawlable pages will not be shown.
 - When placing ads on pages that require authentication, set `page-url` on the `<adsbygoogle />` component to the URL of a page on your site that is publicly accessible, which would have similar/relevant content.
 
 
