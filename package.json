@@ -22,7 +22,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "nuxt": "^2.14.0",
+    "nuxt": "^2.14.1",
     "codecov": "^3.7.2",
     "eslint": "^7.6.0",
     "eslint-config-standard": "^14.1.1",
