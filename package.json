@@ -22,7 +22,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "nuxt": "^2.14.6",
+    "nuxt": "^2.14.7",
     "codecov": "^3.8.0",
     "eslint": "^7.11.0",
     "eslint-config-standard": "^14.1.1",
@@ -32,7 +32,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^7.0.1",
-    "jest": "^26.5.2",
+    "jest": "^26.5.3",
     "jsdom": "^16.4.0",
     "standard-version": "^9.0.0"
   },
